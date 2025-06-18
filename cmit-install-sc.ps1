@@ -54,12 +54,12 @@ if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Services\ScreenConnect Client ($en
     $company = $company.TrimEnd()
     $company = [uri]::EscapeDataString($company)
     $insturl = $env:ConnectWiseControlBaseUrl + "?e=Access&y=Guest&c=" + $company + "&c=&c=&c=&c=&c=&c="
-    $tmp = "ConnectWiseControl.ClientSetup.exe"
+    $tmp = "ScreenConnect.ClientSetup.msi"
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Invoke-WebRequest -Uri $insturl -OutFile $tmp
     #cert from 16/August/2022 to 15/August/2025
     verifyPackage $tmp "ConnectWise, LLC" "4c2272fba7a7380f55e2a424e9e624aee1c14579" "ConnectWise Control Client Setup" $insturl
     write-host "- Installing ConnectWise Control..."
-    Start-Process -Wait -FilePath $tmp -ArgumentList "/qn" -PassThru
+    Start-Process -Wait -FilePath "msiexec.exe" -ArgumentList "/i $tmp /qn" -PassThru
     CreateJoinLink
 }
